@@ -9,6 +9,7 @@ class PubTest < MiniTest::Test
   def setup
     @pub = Pub.new("The Boozer", 500.00)
     @drink = Drink.new("Beer", 2.99, 5)
+    @drink2 = Drink.new("Absenthe", 10, 50)
     @customer = Customer.new("Danny", 50.00, 26)
     @customer2 = Customer.new("Paul", 100.00, 17)
   end
@@ -60,13 +61,25 @@ class PubTest < MiniTest::Test
     assert_equal(0, @pub.drink_count())
   end
 
-  def test_unsuccessful_sale
+  def test_unsuccessful_sale_age
     @pub.add_drink(@drink)
     @customer2.buy_drink(@drink, @pub)
     assert_equal(500.00, @pub.till)
     assert_equal(100.00, @customer2.wallet)
     assert_equal(0, @customer2.number_of_drinks())
     assert_equal(1, @pub.drink_count())
+  end
+
+  def test_unsuccessful_sale_too_drunk
+    @pub.add_drink(@drink2)
+    @customer.buy_drink(@drink2, @pub)
+    assert_equal(true, @customer.too_drunk(@pub))
+  end
+
+  def test_is_customer_too_drunk
+    @pub.add_drink(@drink)
+    @customer.buy_drink(@drink, @pub)
+    assert_equal(false, @customer.too_drunk(@pub))
   end
 
 

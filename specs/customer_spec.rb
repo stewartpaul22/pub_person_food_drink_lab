@@ -33,11 +33,11 @@ class CustomerTest < MiniTest::Test
   end
 
   def test_customer_can_buy_drink_from_pub
-    pub = Pub.new("The Boozer", 500.00)
+
     drink = Drink.new("beer", 2.99, 5)
-    pub.add_drink(drink)
-    @customer.buy_drink(pub.drink_sold(drink), @pub)
-    assert_equal(0, pub.drink_count())
+    @pub.add_drink(drink)
+    @customer.buy_drink(@pub.drink_sold(drink), @pub)
+    assert_equal(0, @pub.drink_count())
     assert_equal(1, @customer.number_of_drinks)
     assert_equal(5, @customer.drunkeness_level)
   end
@@ -54,6 +54,13 @@ class CustomerTest < MiniTest::Test
     drink = Drink.new("beer", 2.99, 5)
     @customer.drunkeness_level_change(drink)
     assert_equal(5, @customer.drunkeness_level)
+  end
+
+  def test_too_drunk
+    drink = Drink.new("Absenthe", 10, 50)
+    @pub.add_drink(drink)
+    @customer.buy_drink(@pub.drink_sold(drink), @pub)
+    assert_equal(true, @customer.too_drunk(@pub))
   end
 
 end
