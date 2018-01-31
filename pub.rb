@@ -8,4 +8,8 @@ class Pub
     @till = till
   end
 
+  def drink_count
+    return @drinks.count()
+  end
+
 end
