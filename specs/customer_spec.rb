@@ -68,14 +68,14 @@ class CustomerTest < MiniTest::Test
   end
 
   def test_food_bought
-    assert_equal(true, @customer.food_bought(@food))
+    assert_equal(true, @customer.buy_food(@food))
   end
 
   def test_drunkeness_decreases_by_rejuvenation_level
     # arrange
     @customer.buy_drink(@drink, @pub)
     # act
-    @customer.food_bought(@food)
+    @customer.buy_food(@food)
     # assert
     assert_equal(3, @customer.drunkeness_level)
   end
