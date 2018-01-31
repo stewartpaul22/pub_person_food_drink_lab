@@ -16,5 +16,7 @@ class PubTest < MiniTest::Test
     assert_equal(1, @pub.till)
   end
 
+  
+
 
 end
