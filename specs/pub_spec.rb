@@ -1,11 +1,13 @@
 require('minitest/rg')
 require('minitest/autorun')
 require_relative('../pub.rb')
+require_relative('../drink.rb')
 
 class PubTest < MiniTest::Test
 
   def setup
     @pub = Pub.new("The Boozer", 500.00)
+    @drink = Drink.new("Beer", 2.99)
   end
 
   def test_pub_has_a_name
@@ -18,6 +20,24 @@ class PubTest < MiniTest::Test
 
   def test_pub_drink_count
     assert_equal(0, @pub.drink_count())
+  end
+
+  def test_add_drinks_to_pub
+    @pub.add_drink(@drink)
+    assert_equal(1, @pub.drink_count())
+  end
+
+  def test_drink_is_sold
+    @pub.add_drink(@drink)
+    @pub.drink_sold(@drink)
+    assert_equal(0, @pub.drink_count())
+  end
+
+  def test_till_increases_when_drink_bought
+    @pub.add_drink(@drink)
+    @pub.drink_sold(@drink)
+    @pub.increase_till_amount(@drink)
+    assert_equal(502.99, @pub.till)
   end
 
 
