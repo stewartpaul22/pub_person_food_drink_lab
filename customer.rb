@@ -11,7 +11,7 @@ class Customer
   end
 
   def buy_drink(drink, pub)
-    if @age >= pub.age_limit && @drunkeness_level < pub.drunkeness_limit()
+    if @age >= pub.age_limit && @drunkeness_level < pub.drunkeness_limit() && @wallet >= drink.price
       @number_of_drinks << drink
       @wallet -= drink.price()
       pub.drink_sold(drink)
@@ -30,6 +30,13 @@ class Customer
 
   def too_drunk(pub)
     return @drunkeness_level >= pub.drunkeness_limit
+  end
+
+  def food_bought(food)
+    @drunkeness_level -= food.rejuvenation_level
+    @wallet -= food.price
+    
+    return @wallet >= food.price()
   end
 
 

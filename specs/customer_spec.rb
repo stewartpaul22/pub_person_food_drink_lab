@@ -3,13 +3,16 @@ require('minitest/autorun')
 require_relative('../customer.rb')
 require_relative('../drink.rb')
 require_relative('../pub.rb')
+require_relative('../food.rb')
 
 
 class CustomerTest < MiniTest::Test
 
   def setup
     @customer = Customer.new("Frank", 100.00, 25)
+    @customer2 = Customer.new("Bill", 0.99, 25)
     @pub = Pub.new("The Boozer", 500.00)
+    @food = Food.new("Crisps", 1.00, 2)
   end
 
   def test_has_name
@@ -61,6 +64,16 @@ class CustomerTest < MiniTest::Test
     @pub.add_drink(drink)
     @customer.buy_drink(@pub.drink_sold(drink), @pub)
     assert_equal(true, @customer.too_drunk(@pub))
+  end
+
+  def test_food_bought
+    assert_equal(true, @customer.food_bought(@food))
+  end
+
+  def test_drunkeness_decreases_by_rejuvenation_level
+    @customer.buy_drink(@pub.drink_sold(drink), @pub)
+    @customer.food_bought(@food)
+    assert_equal(3, @customer.drunkeness_level)
   end
 
 end
