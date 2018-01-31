@@ -8,7 +8,8 @@ require_relative('../pub.rb')
 class CustomerTest < MiniTest::Test
 
   def setup
-    @customer = Customer.new("Frank", 100.00)
+    @customer = Customer.new("Frank", 100.00, 25)
+    @pub = Pub.new("The Boozer", 500.00)
   end
 
   def test_has_name
@@ -20,27 +21,39 @@ class CustomerTest < MiniTest::Test
   end
 
   def test_customer_can_buy_drink
-    drink = Drink.new("beer", 2.99)
-    @customer.buy_drink(drink)
+    drink = Drink.new("beer", 2.99, 5)
+    @customer.buy_drink(drink, @pub)
     assert_equal(1, @customer.number_of_drinks())
   end
 
   def test_wallet_reduces_when_buys_a_drink
-    drink = Drink.new("beer", 2.99)
-    @customer.buy_drink(drink)
+    drink = Drink.new("beer", 2.99, 5)
+    @customer.buy_drink(drink, @pub)
     assert_equal(97.01, @customer.wallet)
   end
 
   def test_customer_can_buy_drink_from_pub
     pub = Pub.new("The Boozer", 500.00)
-    drink = Drink.new("beer", 2.99)
+    drink = Drink.new("beer", 2.99, 5)
     pub.add_drink(drink)
-    @customer.buy_drink(pub.drink_sold(drink))
+    @customer.buy_drink(pub.drink_sold(drink), @pub)
     assert_equal(0, pub.drink_count())
     assert_equal(1, @customer.number_of_drinks)
+    assert_equal(5, @customer.drunkeness_level)
   end
 
+  def test_customer_age
+    assert_equal(25, @customer.age)
+  end
 
+  def test_customers_drunkeness_level
+    assert_equal(0, @customer.drunkeness_level)
+  end
 
+  def test_customer_drunkeness_level_increases
+    drink = Drink.new("beer", 2.99, 5)
+    @customer.drunkeness_level_change(drink)
+    assert_equal(5, @customer.drunkeness_level)
+  end
 
 end
