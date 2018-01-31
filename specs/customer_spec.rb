@@ -56,7 +56,7 @@ class CustomerTest < MiniTest::Test
 
   def test_customer_drunkeness_level_increases
     drink = Drink.new("beer", 2.99, 5)
-    @customer.drunkeness_level_change(drink)
+    @customer.drink_increases_drunkeness(drink)
     assert_equal(5, @customer.drunkeness_level)
   end
 
